@@ -11,7 +11,7 @@ def preprocess(data):
 
     df = pd.DataFrame({'username': messages, 'date': dates})
 
-    df['date'] = pd.to_datetime(df['date'], format='%d/%m/%y, %I:%M %p - ')
+    df['date'] = pd.to_datetime(df['date'], format='%d/%m/%Y, %I:%M %p - ')
 
 
     users = []
