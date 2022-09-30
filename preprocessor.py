@@ -9,22 +9,19 @@ def preprocess(data):
 
     pattern3 = '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s'
 
-    l1 = ['am', 'AM', 'pm', 'PM']
+    if re.match(pattern2, data):
+        messages = re.split(pattern2, data)[1:]
+        dates = re.findall(pattern2, data)
+    else:
+        messages = re.split(pattern3, data)[1:]
+        dates = re.findall(pattern3, data)
 
-    for i in l1:
-        if i in data:
-            messages = re.split(pattern2, data)[1:]
-            dates = re.findall(pattern2, data)
-        else:
-            messages = re.split(pattern3, data)[1:]
-            dates = re.findall(pattern3, data)
 
     df = pd.DataFrame({'username': messages, 'date': dates})
 
-    for i in df['date']:
-        df['date'] = (i[:-3])
+    df['date'] = df['date'].map(lambda x: x.rstrip(' - '))
 
-    df['date'] = pd.to_datetime(df['date'][:-3], dayfirst = True)
+    df['date'] = pd.to_datetime(df['date'], dayfirst = True,errors='coerce')
 
 
     users = []
